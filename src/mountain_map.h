@@ -7,7 +7,7 @@
  Info:
    Section       : 
    Bank          : 0
-   Map size      : 29 x 17
+   Map size      : 32 x 17
    Tile set      : Z:\home\mkremer\workspace\gb_game\mountain_tiles.gbr
    Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
@@ -18,7 +18,7 @@
 
 */
 
-#define MountainsMapWidth 29
+#define MountainsMapWidth 32
 #define MountainsMapHeight 17
 #define MountainsMapBank 0
 

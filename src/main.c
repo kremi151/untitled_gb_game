@@ -22,20 +22,25 @@
 #include "mountain_tiles.h"
 #include "mountain_map.h"
 
+int scroll = 0;
+
+void vblank() {}
+
 void intr_lyc() {
     //move_bkg(LYC_REG, 0);
     //LYC_REG = (LYC_REG + 2) % 0x64;
 
     if (LYC_REG == 0x00) {
-        // move_bkg
-        // move_win
-        move_bkg(10, 0);
-        LYC_REG = 0x30;
-    } else if (LYC_REG == 0x30) {
-        move_bkg(20, 0);
-        LYC_REG = 0x60;
-    } else if (LYC_REG == 0x60) {
-        move_bkg(30, 0);
+        // Clouds
+        move_bkg(scroll, 0);
+        LYC_REG = 0x28;
+    } else if (LYC_REG == 0x28) {
+        // Mountains
+        move_bkg(scroll/2, 0);
+        LYC_REG = 0x70;
+    } else if (LYC_REG == 0x70) {
+        // Grass
+        move_bkg(scroll, 0);
         LYC_REG = 0x00;
     }
 }
@@ -44,12 +49,13 @@ int main () {
     set_bkg_data(0, 12, MountainTiles);
     set_bkg_tiles(0, 0, MountainsMapWidth, MountainsMapHeight, MountainsMap);
 
-    //STAT_REG = 0x45;
-    //LYC_REG = 0x01;
+    STAT_REG = 0x45;
+    LYC_REG = 0x00;
 
-    //disable_interrupts();
-    //add_LCD(intr_lyc);
-    //enable_interrupts();
+    disable_interrupts();
+    add_LCD(intr_lyc);
+    add_VBL(vblank);
+    enable_interrupts();
 
     set_interrupts(VBL_IFLAG | LCD_IFLAG);
 
@@ -65,6 +71,10 @@ int main () {
 
     while (1) {
         //c = 0;
+        //printf("a");
         wait_vbl_done();
+        scroll+=2;
+        //printf("b");
+        move_bkg(scroll, 0);
     }
 }
