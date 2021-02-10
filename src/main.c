@@ -22,6 +22,9 @@
 #include "mountain_tiles.h"
 #include "mountain_map.h"
 
+// Workaround to work on FunkyBoy
+#define PARALLAX_LYC_BEGIN 0x01
+
 int scroll = 0;
 
 void vblank() {}
@@ -30,7 +33,7 @@ void intr_lyc() {
     //move_bkg(LYC_REG, 0);
     //LYC_REG = (LYC_REG + 2) % 0x64;
 
-    if (LYC_REG == 0x00) {
+    if (LYC_REG == PARALLAX_LYC_BEGIN) {
         // Clouds
         move_bkg(scroll, 0);
         LYC_REG = 0x28;
@@ -41,7 +44,7 @@ void intr_lyc() {
     } else if (LYC_REG == 0x70) {
         // Grass
         move_bkg(scroll, 0);
-        LYC_REG = 0x00;
+        LYC_REG = PARALLAX_LYC_BEGIN;
     }
 }
 
@@ -50,7 +53,7 @@ int main () {
     set_bkg_tiles(0, 0, MountainsMapWidth, MountainsMapHeight, MountainsMap);
 
     STAT_REG = 0x45;
-    LYC_REG = 0x00;
+    LYC_REG = PARALLAX_LYC_BEGIN;
 
     disable_interrupts();
     add_LCD(intr_lyc);
