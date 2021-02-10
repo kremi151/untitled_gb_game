@@ -76,7 +76,7 @@ int main () {
         //c = 0;
         //printf("a");
         wait_vbl_done();
-        scroll+=2;
+        scroll++;
         //printf("b");
         move_bkg(scroll, 0);
     }
