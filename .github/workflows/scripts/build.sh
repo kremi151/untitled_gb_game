@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "Install wget"
+apt-get install -y wget
+
 echo "Upgrade to newer CMake"
 new_cmake_dir="$HOME/tmp_cmake"
 mkdir $new_cmake_dir
