@@ -30,9 +30,6 @@ int scroll = 0;
 void vblank() {}
 
 void intr_lyc() {
-    //move_bkg(LYC_REG, 0);
-    //LYC_REG = (LYC_REG + 2) % 0x64;
-
     if (LYC_REG == PARALLAX_LYC_BEGIN) {
         // Clouds
         move_bkg(scroll, 0);
@@ -65,19 +62,9 @@ int main () {
     SHOW_BKG;
     DISPLAY_ON;
 
-    /*int c = 0;
-    font_init();
-    while (c++ < 19) {
-        printf("Greetings planet!\n");
-    }*/
-
-
     while (1) {
-        //c = 0;
-        //printf("a");
         wait_vbl_done();
         scroll++;
-        //printf("b");
         move_bkg(scroll, 0);
     }
 }
