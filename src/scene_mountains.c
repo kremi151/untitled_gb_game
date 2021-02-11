@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include <gb/gb.h>
 
-#include "mountain_tiles.h"
-#include "mountain_map.h"
-#include "sprite_tiles.h"
+#include "tiles/mountain.h"
+#include "maps/mountain.h"
+#include "tiles/sprite.h"
 
 // Workaround to work on FunkyBoy
 #define PARALLAX_LYC_BEGIN 0x01
