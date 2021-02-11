@@ -21,11 +21,16 @@
 
 #include "mountain_tiles.h"
 #include "mountain_map.h"
+#include "sprite_tiles.h"
 
 // Workaround to work on FunkyBoy
 #define PARALLAX_LYC_BEGIN 0x01
 
+#define SPRITE_BIRD 0
+
 int scroll = 0;
+char birdY = 60;
+unsigned char birdState = 0;
 
 void vblank() {}
 
@@ -49,6 +54,10 @@ int main () {
     set_bkg_data(0, 12, MountainTiles);
     set_bkg_tiles(0, 0, MountainsMapWidth, MountainsMapHeight, MountainsMap);
 
+    SPRITES_8x8;
+    set_sprite_data(0, 3, SpriteTiles);
+    set_sprite_tile(SPRITE_BIRD, 0);
+
     STAT_REG = 0x45;
     LYC_REG = PARALLAX_LYC_BEGIN;
 
@@ -60,9 +69,34 @@ int main () {
     set_interrupts(VBL_IFLAG | LCD_IFLAG);
 
     SHOW_BKG;
+    SHOW_SPRITES;
     DISPLAY_ON;
 
     while (1) {
+        switch (joypad()) {
+            case J_UP:
+                if (birdY > 16) {
+                    birdY--;
+                }
+                break;
+            case J_DOWN:
+                if (birdY < 100) {
+                    birdY++;
+                }
+                break;
+        }
+        birdState++;
+        if (birdState == 90) {
+            set_sprite_tile(SPRITE_BIRD, 1);
+        } else if (birdState == 100) {
+            set_sprite_tile(SPRITE_BIRD, 2);
+        } else if (birdState == 110) {
+            set_sprite_tile(SPRITE_BIRD, 1);
+        } else if (birdState == 120) {
+            set_sprite_tile(SPRITE_BIRD, 0);
+            birdState = 0;
+        }
+        move_sprite(SPRITE_BIRD, 75, birdY);
         wait_vbl_done();
         scroll++;
         move_bkg(scroll, 0);
