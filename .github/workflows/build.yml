@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'src/**'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run build in GBDK container
+        uses: docker://giginet/gbdk:latest
+        with:
+          entrypoint: ./.github/workflows/scripts/build.sh
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: mk_game
+          path: "${{ github.workspace }}/cmake-build/mk_game.gb"
