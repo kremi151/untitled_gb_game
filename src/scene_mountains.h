@@ -16,9 +16,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "scene_mountains.h"
-
-int main() {
-    scene_mountains();
-    return 0;
-}
+int scene_mountains();
