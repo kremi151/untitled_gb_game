@@ -49,6 +49,9 @@ void intr_lyc() {
 }
 
 int scene_mountains() {
+    char birdY = 60;
+    unsigned char birdState = 0;
+
     set_bkg_data(0, 12, MountainTiles);
     set_bkg_tiles(0, 0, MountainsMapWidth, MountainsMapHeight, MountainsMap);
 
@@ -69,9 +72,6 @@ int scene_mountains() {
     SHOW_BKG;
     SHOW_SPRITES;
     DISPLAY_ON;
-
-    char birdY = 60;
-    unsigned char birdState = 0;
 
     while (1) {
         switch (joypad()) {
