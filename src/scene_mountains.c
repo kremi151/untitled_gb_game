@@ -28,6 +28,9 @@
 
 #define SPRITE_BIRD 0
 
+#define BIRD_MIN_DEPTH 16
+#define BIRD_MAX_DEPTH 100
+
 int scroll = 0;
 
 void vblank() {}
@@ -49,8 +52,9 @@ void intr_lyc() {
 }
 
 int scene_mountains() {
-    char birdY = 60;
-    unsigned char birdState = 0;
+    UINT8 birdY = 60;
+    UINT8 birdState = 0;
+    UINT8 keys;
 
     set_bkg_data(0, 12, MountainTiles);
     set_bkg_tiles(0, 0, MountainsMapWidth, MountainsMapHeight, MountainsMap);
@@ -74,17 +78,17 @@ int scene_mountains() {
     DISPLAY_ON;
 
     while (1) {
-        switch (joypad()) {
-            case J_UP:
-                if (birdY > 16) {
-                    birdY--;
-                }
-                break;
-            case J_DOWN:
-                if (birdY < 100) {
-                    birdY++;
-                }
-                break;
+        keys = joypad();
+        if (keys & J_UP) {
+            if (birdY > BIRD_MIN_DEPTH) {
+                birdY--;
+            }
+        } else if (keys & J_DOWN) {
+            if (birdY < BIRD_MAX_DEPTH) {
+                birdY++;
+            }
+        } else if (birdState % 4 == 0 && birdY < BIRD_MAX_DEPTH) {
+            birdY++;
         }
         birdState++;
         if (birdState == 90) {
