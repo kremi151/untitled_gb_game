@@ -7,7 +7,6 @@ endif()
 
 set(CMAKE_C_COMPILER lcc)
 set(CMAKE_C_COMPILER_FORCED TRUE)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wa-l -Wl-m -Wl-j -Wl-yt0 -DUSE_SFR_FOR_REG")
 
 set(GBDK_INCLUDE_DIR ${GBDK_ROOT}/include)
 set(GBDK_LIB_DIR ${GBDK_ROOT}/lib)
@@ -28,5 +27,12 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
 
 function(add_gb_rom target)
+    set(GB_MBC_TYPE 0)
+    if(ARGC GREATER_EQUAL 2)
+        set(GB_MBC_TYPE ${ARGV1})
+    endif()
+
     set_target_properties(${target} PROPERTIES OUTPUT_NAME ${target} SUFFIX ".gb")
+    target_compile_options(${target} PRIVATE -Wa-l -Wl-m -Wl-j -DUSE_SFR_FOR_REG)
+    target_link_options(${target} PRIVATE "-Wl-yt${GB_MBC_TYPE}")
 endfunction()
