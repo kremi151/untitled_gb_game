@@ -16,13 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "scene_mountains.h"
-#include "cram.h"
-#include <gb/gb.h>
+#ifndef CRAM_H
+#define CRAM_H
 
-int main() {
-    cram_init();
+#define CRAM_BANK0_IS_TIME_SET *(unsigned char *)0xA005
 
-    scene_mountains();
-    return 0;
-}
+
+#define ENABLE_RAM_MBC3 \
+  *(unsigned char *)0x0000 = 0x0A
+
+#define DISABLE_RAM_MBC3 \
+  *(unsigned char *)0x0000 = 0x00
+
+#define SWITCH_RAM_MBC3(b) \
+  *(unsigned char *)0x4000 = (b)
+
+
+void cram_init();
+
+#endif

@@ -16,4 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef SCENE_MOUNTAINS_H
+#define SCENE_MOUNTAINS_H
+
 int scene_mountains();
+
+#endif
