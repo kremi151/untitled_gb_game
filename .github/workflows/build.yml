@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run build in GBDK container
-        uses: docker://giginet/gbdk:latest
+        uses: docker://kremi151/gbdk-2020:latest
         with:
           entrypoint: ./.github/workflows/scripts/build.sh
       - name: Upload artifact
