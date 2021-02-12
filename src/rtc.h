@@ -16,21 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "scene_mountains.h"
-#include "scene_set_time.h"
+#ifndef RTC_H
+#define RTC_H
+
 #include "cram.h"
-#include <gb/gb.h>
 
-int main() {
-    cram_init();
+#define RTC_SELECT_SECONDS SWITCH_RAM_MBC3(0x08)
+#define RTC_SELECT_MINUTES SWITCH_RAM_MBC3(0x09)
+#define RTC_SELECT_HOURS SWITCH_RAM_MBC3(0x0A)
+#define RTC_SELECT_DAY_LOWER SWITCH_RAM_MBC3(0x0B)
+#define RTC_SELECT_DAY_UPPER SWITCH_RAM_MBC3(0x0C)
 
-    ENABLE_RAM_MBC3;
-    SWITCH_RAM_MBC3(0);
+#define RTC_VALUE *(UINT8*)0xA000
 
-    if (!CRAM_BANK0_IS_TIME_SET) {
-        scene_set_time();
-    }
+#define RTC_LATCH_TIME \
+RTC_VALUE |= 0b01000000
 
-    scene_mountains();
-    return 0;
-}
+#define RTC_UNLATCH_TIME \
+RTC_VALUE &= 0b10111111
+
+#endif

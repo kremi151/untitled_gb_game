@@ -16,21 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "scene_mountains.h"
-#include "scene_set_time.h"
-#include "cram.h"
-#include <gb/gb.h>
+#ifndef SCENE_SET_TIME_H
+#define SCENE_SET_TIME_H
 
-int main() {
-    cram_init();
+int scene_set_time();
 
-    ENABLE_RAM_MBC3;
-    SWITCH_RAM_MBC3(0);
-
-    if (!CRAM_BANK0_IS_TIME_SET) {
-        scene_set_time();
-    }
-
-    scene_mountains();
-    return 0;
-}
+#endif
