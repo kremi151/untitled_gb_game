@@ -11,4 +11,6 @@ add_executable(mk_game ${SOURCES})
 target_include_directories(mk_game PRIVATE ${GBDK_INCLUDE_DIR})
 
 # 0x13 : MBC3+RAM+BATTERY
-add_gb_rom(mk_game 0x13)
+# 2 ROM banks (minimum)
+# 4 RAM banks (default for MBC3)
+add_gb_rom(mk_game 0x13 2 4)
