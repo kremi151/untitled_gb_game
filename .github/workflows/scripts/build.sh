@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "Install wget"
+apt-get update
 apt-get install -y wget
 
 echo "Upgrade to newer CMake"
