@@ -22,6 +22,7 @@
 #include "tiles/mountain.h"
 #include "maps/mountain.h"
 #include "tiles/sprite.h"
+#include "rtc.h"
 
 // Workaround to work on FunkyBoy
 #define PARALLAX_LYC_BEGIN 0x01
@@ -30,6 +31,14 @@
 
 #define BIRD_MIN_DEPTH 16
 #define BIRD_MAX_DEPTH 100
+
+#define IS_NIGHT_TIME \
+RTC_VALUE <= 6 || RTC_VALUE >= 18
+
+#define PALETTE_NIGHT_TIME 0b11111001
+#define PALETTE_DAY_TIME 0b11100100
+
+#define TIME_CHECK_COOLDOWN 50
 
 int scroll = 0;
 
@@ -54,6 +63,7 @@ void intr_lyc() {
 int scene_mountains() {
     UINT8 birdY = 60;
     UINT8 birdState = 0;
+    UINT8 vblanksSinceCheckedTime = TIME_CHECK_COOLDOWN;
     UINT8 keys;
 
     set_bkg_data(0, 12, MountainTiles);
@@ -78,6 +88,14 @@ int scene_mountains() {
     DISPLAY_ON;
 
     while (1) {
+        if (vblanksSinceCheckedTime == TIME_CHECK_COOLDOWN) {
+            RTC_SELECT_HOURS;
+            if (IS_NIGHT_TIME) {
+                *(UINT8*)0xFF47 = PALETTE_NIGHT_TIME;
+            } else {
+                *(UINT8*)0xFF47 = PALETTE_DAY_TIME;
+            }
+        }
         keys = joypad();
         if (keys & J_UP) {
             if (birdY > BIRD_MIN_DEPTH) {
@@ -104,6 +122,7 @@ int scene_mountains() {
         move_sprite(SPRITE_BIRD, 75, birdY);
         wait_vbl_done();
         scroll++;
+        vblanksSinceCheckedTime++;
         move_bkg(scroll, 0);
     }
 }
