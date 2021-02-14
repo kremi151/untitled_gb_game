@@ -25,7 +25,7 @@
 #include "rtc.h"
 
 // Workaround to work on FunkyBoy
-#define PARALLAX_LYC_BEGIN 0x01
+#define PARALLAX_LYC_BEGIN 0x00
 
 #define SPRITE_BIRD 0
 
